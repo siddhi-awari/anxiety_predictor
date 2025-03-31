@@ -23,6 +23,27 @@ def preprocess_input_data(input_data):
     
     return input_df, True
 
+@app.route('/')
+def home():
+    return jsonify({
+        "message": "Welcome to the Anxiety Prediction API!",
+        "endpoints": {
+            "POST /predict": "Predict anxiety level (send JSON data with features)",
+        },
+        "example_input": {
+            "fear_attention": 2,
+            "anxious_speaking": 3,
+            "avoid_strangers": 1,
+            "excessive_worry": 2,
+            "uncomfortable_around_people": 3,
+            "under_confidence": 2,
+            "physical_symptoms": 1,
+            "sleep_disturbances": 3,
+            "avoid_gatherings": 2,
+            "avoid_eye_contact": 1
+        }
+    })
+
 @app.route('/predict', methods=['POST'])
 def predict_anxiety_level():
     data = request.get_json()
@@ -46,7 +67,7 @@ def predict_anxiety_level():
     else:
         anxiety_level = 'Severe'
 
-    return jsonify({"prediction": anxiety_level})
+    return jsonify(anxiety_level)  # Directly returning the string instead of a JSON object
 
 if __name__ == "__main__":
     app.run(debug=True)
